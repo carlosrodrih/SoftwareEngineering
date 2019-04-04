@@ -1,6 +1,6 @@
 # PRIMEROS PASOS CON GITHUB
 
-    Proyecto de Aplicaciones WEB
+    Proyecto de IS
 
 **MINIGUIA DE USO:**
 
