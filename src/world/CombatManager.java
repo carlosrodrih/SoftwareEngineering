@@ -92,9 +92,9 @@ public class CombatManager {
 			if (attackerOne instanceof Player){
 				((Player)attackerOne).respawn();
 
-			}else {
+			}/*else {
 				((Mobile)attackerOne).waitForRespawn();
-			}
+			}*/
 			return false;
 		}
 		if (attackerTwo.getStat(Trait.HITPOINTS) <= 0){
@@ -108,9 +108,9 @@ public class CombatManager {
 			if (attackerTwo instanceof Player){
 				((Player)attackerTwo).respawn();
 
-			}else {
+			}/*else {
 				((Mobile)attackerTwo).waitForRespawn();
-			}
+			}*/
 			return false;
 		}
 		

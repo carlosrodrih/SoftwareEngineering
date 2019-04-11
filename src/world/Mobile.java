@@ -16,23 +16,27 @@ import javax.swing.Timer;
  * @author Matt Turner, Ross Bottorf, Zach Boe, Jonathan Perrine
  * 
  */
-public class Mobile extends DatabaseObject implements Movable {
+public class Mobile extends DatabaseObject implements PlayerInterface{
 
 	private static final long serialVersionUID = 1L;
-	private Room startingLoc;
-	private transient boolean isFighting;
-	private int hitPoints;
-	private int maxHitPoints;
-	private int technique;
-	private int maxTechnique;
-	private int agility;
-	private int strength;
-	private int toughness;
-	private int intellect;
-	private GearList gearList;
-	private Strategy myStrategy;
+	/*private int maxTechnique;
 	private int roomId;
 	private Mobile mySelf;
+	private GearList gearList;
+	private Room startingLoc;
+	private transient boolean isFighting;*/
+	private int maxHealth;
+	private int currentHealth;
+	private int agility;
+	private int strength;
+	private int intellect;
+	private int damage;
+	private int armor;
+	private Trait mainTrait;
+	private Strategy strategy;
+	private int lvl;
+	private Gear gear;
+	private String desc;
 
 	/**
 	 * A Mobile needs only a String when constructed (which becomes the Mobile's
@@ -41,8 +45,8 @@ public class Mobile extends DatabaseObject implements Movable {
 	 * The constructor does create some default values for the mobiles stats.
 	 * 
 	 * It is worth noting that Mobile and Player stats appear identical, but can
-	 * be different. Players rely on armor and toughness - Mobs only use
-	 * toughness to reduce damage, so this might be higher. Similarly, strength
+	 * be different. Players rely on armor and armor - Mobs only use
+	 * armor to reduce damage, so this might be higher. Similarly, strength
 	 * might be higher to account for a lack of weapons.
 	 * 
 	 * 
@@ -50,26 +54,33 @@ public class Mobile extends DatabaseObject implements Movable {
 	 *            A String that represents the name of the new Mobile.
 	 * 
 	 */
-	public Mobile(String name) {
+	public Mobile(String name, int level, int maxHealth, Gear gear, int armor, int damage, String trait, String strat, String desc) {
 		super(name);
-		myStrategy = new Greets();
-		this.gearList = new GearContainer(name + "'s gear", name + "'s gear:",
-				20, false);
-		this.agility = 5;
-		this.hitPoints = 30;
-		this.intellect = 5;
-		this.strength = 4;
-		this.technique = 4;
-		this.toughness = 4;
-		this.maxHitPoints = 30;
+		this.gear = gear;
+		this.desc = desc;
+		this.lvl = level;
+		this.mainTrait = Trait.valueOf(trait);
+		if(strat == "Agressive")
+			setStrategy(new Agressive());
+		else
+			setStrategy(new PassiveAgressive());
+		setStat(maxHealth, Trait.HITPOINTS);
+		setStat(damage, Trait.DAMAGE);	
+		setStat(armor, Trait.ARMOR);
+		setTraits(level, mainTrait);
+		currentHealth = this.maxHealth;
+		//myStrategy = new Greets();
+		//this.gearList = new GearContainer(name + "'s gear", name + "'s gear:",
+		//		20, false);
+		/*this.maxHitPoints = 30;
 		this.maxTechnique = 4;
 		this.gearList.setLocation(this);
 		startingLoc = null;
 		mySelf = this;
-		this.isFighting = false;
+		this.isFighting = false;*/
 	}
 
-	@Override
+/*	@Override
 	public synchronized void moveToRoom(Room destination) {
 
 		if (this.getLocation() != null) {
@@ -85,11 +96,41 @@ public class Mobile extends DatabaseObject implements Movable {
 	@Override
 	public void use(String itemName) {
 		this.gearList.getGear(itemName).getDefaultBehavior(this);
-	}
+	}*/
 
 	@Override
+	public void setTraits(int lvl, Trait mainTrait) {
+		int points =  3 * lvl;
+		int addPoints = 6 * lvl;
+		setStat(points, Trait.AGILITY);
+		setStat(points, Trait.STRENGTH);
+		setStat(points, Trait.INTELLECT);
+		setStat(addPoints, mainTrait);
+	}
+	
+	@Override
 	public void setStat(int value, Trait stat) {
-		if (stat == Trait.AGILITY)
+		switch (stat) {
+		case AGILITY:
+			this.agility = value;
+			break;
+		case INTELLECT:
+			this.intellect = value;
+			break;
+		case STRENGTH:
+			this.strength = value;
+			break;
+		case HITPOINTS:
+			this.maxHealth = value * this.strength;
+			break;
+		case DAMAGE:
+			this.damage = value * this.intellect;
+			break;
+		case ARMOR:
+			this.armor = value * this.agility;
+			break;
+		}
+		/*if (stat == Trait.AGILITY)
 			agility = value;
 		else if (stat == Trait.HITPOINTS)
 			hitPoints = value;
@@ -97,53 +138,73 @@ public class Mobile extends DatabaseObject implements Movable {
 			intellect = value;
 		else if (stat == Trait.MAXHITPOINTS) {
 			maxHitPoints = value;
-			
+				
+		else if (stat == Trait.TECHNIQUE)
+			technique = value;
 		} else if (stat == Trait.MAXTECHNIQUE) {
 			maxTechnique = value;
 			technique = maxTechnique;
 		} else if (stat == Trait.STRENGTH)
 			strength = value;
-		else if (stat == Trait.TECHNIQUE)
-			technique = value;
+
 		else
-			toughness = value;
+			armor = value;*/
 	}
 
 	@Override
 	public int getStat(Trait stat) {
-		if (stat == Trait.AGILITY)
-			return agility;
-		else if (stat == Trait.HITPOINTS){
-			if (hitPoints < 0) {
-				return 0;
-			}
-			return hitPoints;
-		}else if (stat == Trait.INTELLECT)
-			return intellect;
-		else if (stat == Trait.MAXHITPOINTS)
-			return maxHitPoints;
-		else if (stat == Trait.MAXTECHNIQUE)
-			return maxTechnique;
-		else if (stat == Trait.STRENGTH)
-			return strength;
-		else if (stat == Trait.TECHNIQUE)
-			return technique;
-		else
-			return toughness;
-
+		int value = 0;
+		switch (stat) {
+		case AGILITY:
+			value = this.agility;
+			break;
+		case INTELLECT:
+			value = this.intellect;
+			break;
+		case STRENGTH:
+			value = this.strength;
+			break;
+		case HITPOINTS:
+			value = this.maxHealth;
+			break;
+		case DAMAGE:
+			value = this.damage;
+			break;
+		case ARMOR:
+			value = this.armor;
+			break;
+		}
+		return value;
 	}
 
+	public int getLvl() {
+		return this.lvl;
+	}
+	
+	public int getCurrHealth() {
+		return this.currentHealth;
+	}
+
+	public Gear getGear() {
+		return this.gear;
+	}
+	
+	public String getDesc() {
+		return this.desc;
+	}
+	
 	@Override
 	public void sendToPlayer(String message) {
-		if (myStrategy != null)
-			myStrategy.reactToSend(message, this);
+		if (strategy != null)
+			strategy.reactToSend(message, this);
 	}
 
 	@Override
 	public void attack(Movable enemy) {
-		myStrategy.attackBehavior(this, enemy);
+		strategy.attackBehavior(this, enemy);
 	}
 
+	/*
 	@Override
 	public boolean addGear(Gear item) {
 		return this.addGear(this, item);
@@ -199,7 +260,7 @@ public class Mobile extends DatabaseObject implements Movable {
 	public List<Gear> listGear() {
 		return this.gearList.listGear();
 	}
-
+*/
 	@Override
 	/*
 	 * The toString method overrides Object's toString method. This String is
@@ -233,7 +294,7 @@ public class Mobile extends DatabaseObject implements Movable {
 		// Damage Roll
 		else {
 			int damage = Math.max(1, this.strength
-					- (((Player) enemy).getStat(Trait.TOUGHNESS)/3)
+					- (((Player) enemy).getStat(Trait.ARMOR)/3)
 					- ((Player) enemy).getArmor().getDamageReduction());
 			int newHP = enemy.getStat(Trait.HITPOINTS) - damage;
 			enemy.setStat(newHP, Trait.HITPOINTS);
@@ -250,8 +311,8 @@ public class Mobile extends DatabaseObject implements Movable {
 	 * @param myStrategy
 	 *            - A Strategy object used to determine the mobile's behavior.
 	 */
-	public void setStrategy(Strategy myStrategy) {
-		this.myStrategy = myStrategy;
+	public void setStrategy(Strategy strategy) {
+		this.strategy = strategy;
 	}
 
 	/**
@@ -261,7 +322,7 @@ public class Mobile extends DatabaseObject implements Movable {
 	 *         with the world.
 	 */
 	public Strategy getStrategy() {
-		return myStrategy;
+		return strategy;
 	}
 
 	/**
@@ -270,20 +331,20 @@ public class Mobile extends DatabaseObject implements Movable {
 	 * The listener will move the MOB back to wherever it was spawned when the
 	 * server started. It will also reset the hp back to its maximum.
 	 */
-	public void waitForRespawn() {
+/*	public void waitForRespawn() {
 		((Room) mySelf.getLocation()).refreshPlayers();
 		((Room) mySelf.getLocation()).refreshMobiles();
 		Timer deadTimer = new Timer(10000, new DeadTimerListener());
 		deadTimer.setRepeats(false);
 		deadTimer.start();
-	}
+	}*/
 
 	/**
 	 * DeadTimerListener is the action listener for the timer that is created in
 	 * the waitForRespawn method. It will call all the required classes that are
 	 * needed to place a MOB back into the world and for setting there HP.
 	 */
-	private class DeadTimerListener implements ActionListener {
+/*	private class DeadTimerListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent arg0) {
 			startingLoc.add((Mobile) mySelf);
@@ -293,7 +354,7 @@ public class Mobile extends DatabaseObject implements Movable {
 			((Room) mySelf.getLocation()).refreshMobiles();
 			((Room)mySelf.getLocation()).sendToRoom(mySelf.getName() + " has respawned");
 		}
-	}
+	}*/
 
 	/**
 	 * setStart is called once whenever a MOB is created for the first time. It
@@ -303,21 +364,26 @@ public class Mobile extends DatabaseObject implements Movable {
 	 * @param startLoc
 	 *            Room MOB is first placed
 	 */
-	public void setStart(Room startLoc) {
-		this.startingLoc = startLoc;
-	}
+//	public void setStart(Room startLoc) {
+//		this.startingLoc = startLoc;
+//	}
 
 	/**
 	 * Not used, MOB's can be attacked by mulitple players
 	 */
-	public void setFighting(boolean fighting) {
-		// Not used, MOBs can be attacked by multiple players
-	}
+//	public void setFighting(boolean fighting) {
+//		// Not used, MOBs can be attacked by multiple players
+//	}
 
 	/**
 	 * Not used, MOB's can be attacked by mulitple players
 	 */
-	public boolean getFighting() {
-		return false;
+//	public boolean getFighting() {
+//		return false;
+//	}
+	
+	
+	public Mobile cloneMe() {
+		return this;
 	}
 }

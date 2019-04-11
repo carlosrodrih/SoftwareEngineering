@@ -768,7 +768,7 @@ public class CreateWorld {
 		((Mobile) world.getMobile("Small_Scorpion")).setStat(2, Trait.STRENGTH);
 		((Mobile) world.getMobile("Small_Scorpion")).setStat(7, Trait.AGILITY);
 		((Mobile) world.getMobile("Small_Scorpion")).setStat(15,
-				Trait.MAXHITPOINTS);
+				Trait.HITPOINTS);
 
 		world
 				.createMobile(
@@ -779,14 +779,14 @@ public class CreateWorld {
 				.setStat(3, Trait.STRENGTH);
 		((Mobile) world.getMobile("Medium_Scorpion")).setStat(8, Trait.AGILITY);
 		((Mobile) world.getMobile("Medium_Scorpion")).setStat(16,
-				Trait.MAXHITPOINTS);
+				Trait.HITPOINTS);
 
 		world.createMobile("Lurker",
 				"A monstrous spider-like creature, whose fangs drip acid.",
 				cargoPod, new Agressive());
 		((Mobile) world.getMobile("Lurker")).setStat(6, Trait.STRENGTH);
 		((Mobile) world.getMobile("Lurker")).setStat(6, Trait.AGILITY);
-		((Mobile) world.getMobile("Lurker")).setStat(25, Trait.MAXHITPOINTS);
+		((Mobile) world.getMobile("Lurker")).setStat(25, Trait.HITPOINTS);
 
 		world
 				.createMobile(
@@ -796,9 +796,9 @@ public class CreateWorld {
 								+ "that turn into a whiplike tail.",
 						hiveApproach, new PassiveAgressive());
 		((Mobile) world.getMobile("Hive_Scout")).setStat(4, Trait.STRENGTH);
-		((Mobile) world.getMobile("Hive_Scout")).setStat(25, Trait.MAXHITPOINTS);
+		((Mobile) world.getMobile("Hive_Scout")).setStat(25, Trait.HITPOINTS);
 		((Mobile) world.getMobile("Hive_Scout")).setStat(8, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Scout")).setStat(3, Trait.TOUGHNESS);
+		((Mobile) world.getMobile("Hive_Scout")).setStat(3, Trait.ARMOR);
 
 		world
 				.createMobile(
@@ -808,9 +808,9 @@ public class CreateWorld {
 								+ "that turn into a whiplike tail.",
 						hiveApproach, new PassiveAgressive());
 		((Mobile) world.getMobile("Hive_Drone")).setStat(4, Trait.STRENGTH);
-		((Mobile) world.getMobile("Hive_Drone")).setStat(15, Trait.MAXHITPOINTS);
+		((Mobile) world.getMobile("Hive_Drone")).setStat(15, Trait.HITPOINTS);
 		((Mobile) world.getMobile("Hive_Drone")).setStat(8, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Drone")).setStat(3, Trait.TOUGHNESS);
+		((Mobile) world.getMobile("Hive_Drone")).setStat(3, Trait.ARMOR);
 
 		world
 				.createMobile(
@@ -819,9 +819,9 @@ public class CreateWorld {
 						hivePerimeter, new Agressive());
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(9, Trait.STRENGTH);
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(6, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Guardian")).setStat(7, Trait.TOUGHNESS);
+		((Mobile) world.getMobile("Hive_Guardian")).setStat(7, Trait.ARMOR);
 		((Mobile) world.getMobile("Hive_Guardian"))
-				.setStat(40, Trait.MAXHITPOINTS);
+				.setStat(40, Trait.HITPOINTS);
 
 		world
 				.createMobile(
@@ -834,7 +834,7 @@ public class CreateWorld {
 										+ "deeper into the hive before returning."));
 		((Mobile) world.getMobile("Hive_Worker")).setStat(9, Trait.STRENGTH);
 		((Mobile) world.getMobile("Hive_Worker")).setStat(2, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Worker")).setStat(40, Trait.MAXHITPOINTS);
+		((Mobile) world.getMobile("Hive_Worker")).setStat(40, Trait.HITPOINTS);
 		((Mutters) world.getMobile("Hive_Worker").getStrategy())
 				.setMobile(world.getMobile("Hive_Worker"));
 
@@ -847,9 +847,9 @@ public class CreateWorld {
 						hiveQueensLair, new Agressive());
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(16, Trait.STRENGTH);
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(6, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Guardian")).setStat(8, Trait.TOUGHNESS);
+		((Mobile) world.getMobile("Hive_Guardian")).setStat(8, Trait.ARMOR);
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(200,
-				Trait.MAXHITPOINTS);
+				Trait.HITPOINTS);
 
 	}
 }

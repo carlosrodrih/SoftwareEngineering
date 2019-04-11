@@ -80,9 +80,9 @@ public abstract class Gear extends DatabaseObject implements Comparable<Gear> {
 			intellectMod = value;
 		else if (stat == Trait.STRENGTH)
 			strengthMod = value;
-		else if (stat == Trait.TECHNIQUE)
-			techniqueMod = value;
-		else if (stat == Trait.TOUGHNESS)
+		//else if (stat == Trait.TECHNIQUE)
+		//	techniqueMod = value;
+		else if (stat == Trait.ARMOR)
 			toughnessMod = value;
 	}
 
@@ -104,9 +104,9 @@ public abstract class Gear extends DatabaseObject implements Comparable<Gear> {
 			return intellectMod;
 		else if (stat == Trait.STRENGTH)
 			return strengthMod;
-		else if (stat == Trait.TECHNIQUE)
-			return techniqueMod;
-		else if (stat == Trait.TOUGHNESS)
+		//else if (stat == Trait.TECHNIQUE)
+		//	return techniqueMod;
+		else if (stat == Trait.ARMOR)
 			return toughnessMod;
 		else
 			return 0;

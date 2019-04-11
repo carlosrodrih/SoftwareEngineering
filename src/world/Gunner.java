@@ -21,7 +21,7 @@ public class Gunner extends CharacterClass {
 	private Gunner() {
 		this.setMod(0, Trait.STRENGTH);
 		this.setMod(4, Trait.AGILITY);
-		this.setMod(1, Trait.TOUGHNESS);
+		this.setMod(1, Trait.ARMOR);
 		this.setMod(3, Trait.INTELLECT);
 
 	}

@@ -21,7 +21,7 @@ public class Dreadnaught extends CharacterClass {
 	private Dreadnaught() {
 		this.setMod(3, Trait.STRENGTH);
 		this.setMod(1, Trait.AGILITY);
-		this.setMod(4, Trait.TOUGHNESS);
+		this.setMod(4, Trait.ARMOR);
 		this.setMod(0, Trait.INTELLECT);
 
 	}
