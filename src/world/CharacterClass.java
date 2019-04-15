@@ -69,6 +69,8 @@ public abstract class CharacterClass implements Serializable {
 		else if (stat == Trait.ARMOR)
 			toughnessMod = value;
 	}
+	
+	public abstract void technique(Player player, Movable target);
 
 	/**
 	 * This method overrides Object's toString() to display a simple text

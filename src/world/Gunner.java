@@ -46,9 +46,9 @@ public class Gunner extends CharacterClass {
 	 * @param target
 	 *            The player's target to shoot at.
 	 */
-	public void Snipe(Player player, Movable target) {
+	public void technique(Player player, Movable target) {
 		if (player.getStat(Trait.TECHNIQUE) > 5) {
-			player.sendToPlayer("You line up a shot, and attack "
+			player.sendToPlayer("You line up a shot, and snipe "
 					+ target.getName() + " at range!");
 			player.setStat(player.getStat(Trait.TECHNIQUE)-5,Trait.TECHNIQUE);
 			player.attack(target);

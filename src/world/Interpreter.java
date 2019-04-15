@@ -1,6 +1,7 @@
 package world;
 
 import java.util.*;
+import command.*;
 
 /**
  * Interpreter is the class that will handle all of the commands that are sent
@@ -17,6 +18,17 @@ import java.util.*;
 public class Interpreter {
 
 	private Map<String, String> commandList;
+	private Command[] commandsList = {
+			new LookCommand(),
+			new NorthCommand(),
+			new SouthCommand(),
+			new EastCommand(),
+			new WestCommand(),
+			new UpCommand(),
+			new DownCommand(),
+			new HelpCommand()
+	};
+	private List<String> commandHelp = new ArrayList<String>();
 	private static Interpreter instance = new Interpreter();
 	private World world;
 
@@ -26,7 +38,10 @@ public class Interpreter {
 
 		this.world = World.getInstance();
 
-		commandList = new HashMap<String, String>();
+		for (Command i : commandsList) 
+			commandHelp.add(i.helpText());
+		
+		/*commandList = new HashMap<String, String>();
 		commandList
 				.put(
 						"look",
@@ -50,7 +65,7 @@ public class Interpreter {
 		commandList
 				.put(
 						"ooc",
-						"- ooc <message>: Out of Character channel—the basic MUD wide chat command—message goes to everyone currently connected.");
+						"- ooc <message>: Out of Character channelï¿½the basic MUD wide chat commandï¿½message goes to everyone currently connected.");
 		commandList.put("who", "- who: lists all players that are logged in.");
 		commandList
 				.put(
@@ -74,14 +89,14 @@ public class Interpreter {
 		commandList.put("drop",
 				"- drop <item>: drops an item from your inventory to the room.");
 		commandList.put("use",
-				"- use <item>: executes the item’s default behavior.");
+				"- use <item>: executes the item's default behavior.");
 		commandList
 				.put("quit",
 						"- quit: allows a player to exit the system. Will not shut MUD down.");
 		commandList
 				.put(
 						"shutdown",
-						"- shutdown: saves the MUD’s data and then shuts the system down. (only game administrator's can use this.");
+						"- shutdown: saves the MUD's data and then shuts the system down. (only game administrator's can use this.");
 		commandList.put("save", "- save: saves player state in the game.");
 		commandList
 				.put("describeme",
@@ -102,7 +117,7 @@ public class Interpreter {
 				"- wound <mob>: initializes wound attack on mob, is a dreadnaught command only.");
 		commandList.put("setclass",
 				"- setclass <class>: (Gunner or Dreadnaught.)");
-		commandList.put("new", "- new: creates new player on log in.");
+		commandList.put("new", "- new: creates new player on log in.");*/
 	}
 
 	/**
@@ -173,7 +188,7 @@ public class Interpreter {
 					player.sendToPlayer("Player saved.");
 				}
 
-				// Describme
+				// Describe me
 			} else if (command.equals("describeme")) {
 				if (scanner.hasNext()) {
 					String description = scanner.nextLine().trim();
@@ -559,6 +574,14 @@ public class Interpreter {
 			result += command + '\n';
 		}
 		player.sendToPlayer(result);
+	}
+	
+	public String commandDescriptions() {
+		String result = "";
+		for (String command : commandHelp) {
+			result += String.format(command + "%n");
+		}
+		return result;
 	}
 
 	/*

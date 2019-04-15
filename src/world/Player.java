@@ -543,5 +543,9 @@ public class Player extends DatabaseObject implements Movable {
 	public void setFighting(boolean fighting) {
 		this.isFighting = fighting;
 	}
+	
+	public void technique(Movable target) {
+		gameClass.technique(this, target);
+	}
 
 }

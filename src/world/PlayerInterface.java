@@ -49,5 +49,7 @@ public interface PlayerInterface {
 	 * @return int - An int that represents the value of the requested stat.
 	 */
 	public int getStat(Trait stat);
+	
+	public void technique(Movable target);
 
 }

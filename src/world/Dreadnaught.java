@@ -46,7 +46,7 @@ public class Dreadnaught extends CharacterClass {
 	 * @param target
 	 *            The player's target to shoot at.
 	 */
-	public void Wound(Player player, Movable target) {
+	public void technique(Player player, Movable target) {
 		if (player.getStat(Trait.TECHNIQUE) > 5) {
 			player.sendToPlayer("You strike " + target.getName()
 					+ " and wound them!");
