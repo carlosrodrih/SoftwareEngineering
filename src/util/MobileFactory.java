@@ -1,8 +1,13 @@
-package world;
+package util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
+
+import world.Armor;
+import world.Gear;
+import world.Mobile;
+import world.Weapon;
 
 public class MobileFactory {
 	private static List<Mobile> availableMonsters; 
@@ -24,18 +29,19 @@ public class MobileFactory {
 			int level = Integer.parseInt(loadLine("level"));
 			int maxHealth = Integer.parseInt(loadLine("maxHealth"));
 			int damage = Integer.parseInt(loadLine("damage"));
-			int armor = Integer.parseInt(loadLine("armor"));
-			String trait = loadLine("trait");
+			int toughness = Integer.parseInt(loadLine("toughness"));
+			int accuracy = Integer.parseInt(loadLine("accuracy"));
+			int evasion = Integer.parseInt(loadLine("evasion"));
 			String strat = loadLine("strat");
 			String desc = loadLine("desc");
 			Gear gear;
 			
 			if(loadLine("weapon") != "")
-				gear = new Weapon("", ""); 
+				gear = new Weapon("", ""); // add weapon construction
 			else
-			    gear = new Armor("", "");
+			    gear = new Armor("", ""); // add armor construction
 			
-			availableMonsters.add(new Mobile(name, level, maxHealth, gear, armor, damage, trait, strat, desc));
+			availableMonsters.add(new Mobile(name, level, maxHealth, gear, toughness, accuracy, evasion, damage, strat, desc));
 		} while (num != 0);
 	}
 	

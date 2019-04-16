@@ -57,4 +57,7 @@ public interface Movable extends DatabaseItem, GearList, PlayerInterface{
 	 *            Ture if entering a fight, false if ending combat
 	 */
 	public void setFighting(boolean fighting);
+	
+	public void technique(Movable target);
 }
+

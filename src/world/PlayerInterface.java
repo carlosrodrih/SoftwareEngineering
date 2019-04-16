@@ -21,9 +21,6 @@ public interface PlayerInterface {
 	 */
 	public void attack(Movable enemy);
 
-
-	 
-	public void setTraits(int level, Trait mainTrait);
 	
 	/**
 	 * setStat is a universal setter. It accepts an integer and a Trait enum,
@@ -49,7 +46,4 @@ public interface PlayerInterface {
 	 * @return int - An int that represents the value of the requested stat.
 	 */
 	public int getStat(Trait stat);
-	
-	public void technique(Movable target);
-
 }

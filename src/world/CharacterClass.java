@@ -43,7 +43,7 @@ public abstract class CharacterClass implements Serializable {
 			return strengthMod;
 		else if (stat == Trait.AGILITY)
 			return agilityMod;
-		else if (stat == Trait.ARMOR)
+		else if (stat == Trait.TOUGHNESS)
 			;
 		return toughnessMod;
 
@@ -66,7 +66,7 @@ public abstract class CharacterClass implements Serializable {
 			strengthMod = value;
 		else if (stat == Trait.AGILITY)
 			agilityMod = value;
-		else if (stat == Trait.ARMOR)
+		else if (stat == Trait.TOUGHNESS)
 			toughnessMod = value;
 	}
 	

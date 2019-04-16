@@ -27,12 +27,10 @@ public class Mobile extends DatabaseObject implements PlayerInterface{
 	private transient boolean isFighting;*/
 	private int maxHealth;
 	private int currentHealth;
-	private int agility;
-	private int strength;
-	private int intellect;
 	private int damage;
-	private int armor;
-	private Trait mainTrait;
+	private int toughness;
+	private int accuracy;
+	private int evasion;
 	private Strategy strategy;
 	private int lvl;
 	private Gear gear;
@@ -45,8 +43,8 @@ public class Mobile extends DatabaseObject implements PlayerInterface{
 	 * The constructor does create some default values for the mobiles stats.
 	 * 
 	 * It is worth noting that Mobile and Player stats appear identical, but can
-	 * be different. Players rely on armor and armor - Mobs only use
-	 * armor to reduce damage, so this might be higher. Similarly, strength
+	 * be different. Players rely on TOUGHNESS and TOUGHNESS - Mobs only use
+	 * TOUGHNESS to reduce damage, so this might be higher. Similarly, strength
 	 * might be higher to account for a lack of weapons.
 	 * 
 	 * 
@@ -54,20 +52,20 @@ public class Mobile extends DatabaseObject implements PlayerInterface{
 	 *            A String that represents the name of the new Mobile.
 	 * 
 	 */
-	public Mobile(String name, int level, int maxHealth, Gear gear, int armor, int damage, String trait, String strat, String desc) {
+	public Mobile(String name, int level, int maxHealth, Gear gear, int toughness, int accuracy, int evasion, int damage, String strat, String desc) {
 		super(name);
 		this.gear = gear;
 		this.desc = desc;
 		this.lvl = level;
-		this.mainTrait = Trait.valueOf(trait);
 		if(strat == "Agressive")
 			setStrategy(new Agressive());
 		else
 			setStrategy(new PassiveAgressive());
 		setStat(maxHealth, Trait.HITPOINTS);
 		setStat(damage, Trait.DAMAGE);	
-		setStat(armor, Trait.ARMOR);
-		setTraits(level, mainTrait);
+		setStat(toughness, Trait.TOUGHNESS);
+		setStat(accuracy, Trait.ACCURACY);
+		setStat(evasion, Trait.EVASION);
 		currentHealth = this.maxHealth;
 		//myStrategy = new Greets();
 		//this.gearList = new GearContainer(name + "'s gear", name + "'s gear:",
@@ -97,37 +95,29 @@ public class Mobile extends DatabaseObject implements PlayerInterface{
 	public void use(String itemName) {
 		this.gearList.getGear(itemName).getDefaultBehavior(this);
 	}*/
-
-	@Override
-	public void setTraits(int lvl, Trait mainTrait) {
-		int points =  3 * lvl;
-		int addPoints = 6 * lvl;
-		setStat(points, Trait.AGILITY);
-		setStat(points, Trait.STRENGTH);
-		setStat(points, Trait.INTELLECT);
-		setStat(addPoints, mainTrait);
-	}
 	
 	@Override
 	public void setStat(int value, Trait stat) {
+		value *= this.lvl;
 		switch (stat) {
-		case AGILITY:
-			this.agility = value;
-			break;
 		case INTELLECT:
-			this.intellect = value;
-			break;
 		case STRENGTH:
-			this.strength = value;
-			break;
+		case AGILITY:
+			return;
 		case HITPOINTS:
-			this.maxHealth = value * this.strength;
+			this.maxHealth = value;
 			break;
 		case DAMAGE:
-			this.damage = value * this.intellect;
+			this.damage = value;
 			break;
-		case ARMOR:
-			this.armor = value * this.agility;
+		case TOUGHNESS:
+			this.toughness = value;
+			break;
+		case ACCURACY:
+			this.accuracy = value;
+			break;
+			case EVASION:
+			this.evasion = value;
 			break;
 		}
 		/*if (stat == Trait.AGILITY)
@@ -148,31 +138,30 @@ public class Mobile extends DatabaseObject implements PlayerInterface{
 			strength = value;
 
 		else
-			armor = value;*/
+			TOUGHNESS = value;*/
 	}
 
 	@Override
 	public int getStat(Trait stat) {
 		int value = 0;
 		switch (stat) {
-		case AGILITY:
-			value = this.agility;
-			break;
 		case INTELLECT:
-			value = this.intellect;
-			break;
 		case STRENGTH:
-			value = this.strength;
-			break;
+		case AGILITY:
+			return 0;
 		case HITPOINTS:
 			value = this.maxHealth;
 			break;
 		case DAMAGE:
 			value = this.damage;
 			break;
-		case ARMOR:
-			value = this.armor;
+		case TOUGHNESS:
+			value = this.toughness;
 			break;
+		case ACCURACY:
+			value = this.accuracy;
+		case EVASION:
+			value = this.evasion;
 		}
 		return value;
 	}
@@ -284,8 +273,8 @@ public class Mobile extends DatabaseObject implements PlayerInterface{
 	public void resolveAttack(Movable enemy) {
 
 		// Attack Roll
-		int attackRoll = (int) (Math.random() * 10) + this.agility
-				- enemy.getStat(Trait.AGILITY);
+		int attackRoll = (int) (Math.random() * 10) + this.damage
+				- enemy.getStat(Trait.TOUGHNESS);
 		if (attackRoll < 3) {
 			this.sendToPlayer("You miss by " + (5 - attackRoll));
 			enemy.sendToPlayer(this.getName() + " misses you.");
@@ -293,9 +282,8 @@ public class Mobile extends DatabaseObject implements PlayerInterface{
 
 		// Damage Roll
 		else {
-			int damage = Math.max(1, this.strength
-					- (((Player) enemy).getStat(Trait.ARMOR)/3)
-					- ((Player) enemy).getArmor().getDamageReduction());
+			int damage = Math.max(1, this.damage
+					- (((Player) enemy).getStat(Trait.TOUGHNESS)/3));
 			int newHP = enemy.getStat(Trait.HITPOINTS) - damage;
 			enemy.setStat(newHP, Trait.HITPOINTS);
 			enemy.sendToPlayer(this.getName() + " damages you for " + damage
@@ -385,5 +373,6 @@ public class Mobile extends DatabaseObject implements PlayerInterface{
 	
 	public Mobile cloneMe() {
 		return this;
+	
 	}
 }

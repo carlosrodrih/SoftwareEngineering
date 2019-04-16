@@ -118,14 +118,14 @@ public class Player extends DatabaseObject implements Movable {
 			}
 		} else if (stat == Trait.INTELLECT)
 			intellect = value;
-		else if (stat == Trait.MAXHITPOINTS)
+		/*else if (stat == Trait.MAXHITPOINTS)
 			maxHitPoints = value;
-		else if (stat == Trait.MAXTECHNIQUE)
-			maxTechnique = value;
-		else if (stat == Trait.STRENGTH)
-			strength = value;
 		else if (stat == Trait.TECHNIQUE)
 			technique = value;
+		else if (stat == Trait.MAXTECHNIQUE)
+			maxTechnique = value;*/
+		else if (stat == Trait.STRENGTH)
+			strength = value;
 		else {
 			toughness = value;
 			this.maxHitPoints = toughness * 10;
@@ -150,14 +150,14 @@ public class Player extends DatabaseObject implements Movable {
 			return hitPoints;
 		else if (stat == Trait.INTELLECT)
 			return intellect;
-		else if (stat == Trait.MAXHITPOINTS)
+		/*else if (stat == Trait.MAXHITPOINTS)
 			return maxHitPoints;
-		else if (stat == Trait.MAXTECHNIQUE)
-			return maxTechnique;
-		else if (stat == Trait.STRENGTH)
-			return strength;
 		else if (stat == Trait.TECHNIQUE)
 			return technique;
+		else if (stat == Trait.MAXTECHNIQUE)
+			return maxTechnique;*/
+		else if (stat == Trait.STRENGTH)
+			return strength;
 		else
 			return toughness;
 
@@ -507,9 +507,6 @@ public class Player extends DatabaseObject implements Movable {
 	 * @param raceToSet
 	 *            Race that was selected by the user
 	 */
-	public void setRace(CharacterRace raceToSet) {
-		// TODO not implemented yet.
-	}
 
 	/**
 	 * not implemented yet.
@@ -518,9 +515,6 @@ public class Player extends DatabaseObject implements Movable {
 	 * 
 	 * @return The race of the current character
 	 */
-	public CharacterRace getRace() {
-		return null;
-	}
 
 	/**
 	 * respawn will be called whenever a player is killed during combat. It will
@@ -531,7 +525,7 @@ public class Player extends DatabaseObject implements Movable {
 		mySelf.setLocation(World.getInstance().getDatabaseObject(1));
 		mySelf.moveToRoom((Room)World.getInstance().getDatabaseObject(1));
 		mySelf.setStat(maxHitPoints, Trait.HITPOINTS);
-		mySelf.setStat(maxTechnique, Trait.TECHNIQUE);
+		//mySelf.setStat(maxTechnique, Trait.TECHNIQUE);
 	}
 
 	@Override
