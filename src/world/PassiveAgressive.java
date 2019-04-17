@@ -18,6 +18,7 @@ public class PassiveAgressive extends Strategy {
 	
 	private Player toAttack;
 	private Mobile mySelf;
+	private Scanner sentStuff;
 
 	@Override
 	public void onRoomChange() {
@@ -26,7 +27,7 @@ public class PassiveAgressive extends Strategy {
 
 	@Override
 	public void reactToSend(String sent, Mobile mob) {
-		Scanner sentStuff = new Scanner(sent);
+		sentStuff = new Scanner(sent);
 		String aPlayer = sentStuff.next().trim();
 		if (sentStuff.next().trim().equalsIgnoreCase("enters")){
 			if (World.getInstance().playerExists(aPlayer)
@@ -38,7 +39,7 @@ public class PassiveAgressive extends Strategy {
 	}
 
 	@Override
-	public void attackBehavior(Mobile me, Movable enemy) {
+	public void attackBehavior(Mobile me, Character enemy) {
 		me.resolveAttack(enemy);
 
 	}

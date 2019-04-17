@@ -18,13 +18,13 @@ import javax.swing.Timer;
 public class CombatManager {
 	
 	private AttackTimerListener attackTimerListener = new AttackTimerListener();
-	//private Attack2TimerListener attack2TimerListener = new Attack2TimerListener();
+//	private Attack2TimerListener attack2TimerListener = new Attack2TimerListener();
 
 	private Timer attackTimer;
 	private Timer attackTimer2;
 
 	private Movable attackerOne;
-	private Movable attackerTwo;
+	private Character attackerTwo;
 	
 	/**
 	 * A CombatManager will take in two movable's in its constructor and set them to
@@ -35,15 +35,16 @@ public class CombatManager {
 	 * @param attacker1 Player that started the attack
 	 * @param attacker2 Player that is being attacked
 	 */
-	public CombatManager(Movable attacker1, Movable attacker2) {
+	public CombatManager(Player attacker1, Character attacker2) {
 	
 		this.attackerOne = attacker1;
 		this.attackerTwo = attacker2;
 		((Room)this.attackerOne.getLocation()).sendToRoom(attackerOne.getName() + " has entered combat");
 		this.attackerOne.setFighting(true);
-		if (attackerTwo instanceof Player) {
+		this.attackerTwo.setFighting(true);
+		/*if (attackerTwo instanceof Player) {
 			this.attackerTwo.setFighting(true);
-		}
+		}*/
 		attackTimer = new Timer(1000, attackTimerListener);
 		//attackTimer2 = new Timer(1000, attack2TimerListener);
 
@@ -63,11 +64,11 @@ public class CombatManager {
 	 */
 	public boolean isFighting() {
 		attackTimer.setDelay(5000);
-		//attackTimer2.setDelay(5000);
+		attackTimer2.setDelay(5000);
 		
 		if (!World.getInstance().playerIsLoggedOn(attackerOne.getName())){
 			attackTimer.stop();
-			//attackTimer2.stop();
+			attackTimer2.stop();
 			this.attackerOne.setFighting(false);
 			this.attackerTwo.setFighting(false);
 			return false;
@@ -75,7 +76,7 @@ public class CombatManager {
 		if (attackerTwo instanceof Player) {
 			if (!World.getInstance().playerIsLoggedOn(attackerTwo.getName())){
 				attackTimer.stop();
-				//attackTimer2.stop();
+				attackTimer2.stop();
 				this.attackerOne.setFighting(false);
 				this.attackerTwo.setFighting(false);
 				return false;
@@ -86,7 +87,7 @@ public class CombatManager {
 		if (attackerOne.getStat(Trait.HITPOINTS) <= 0){
 			attackerOne.sendToPlayer("You have perished");
 			attackTimer.stop();
-			//attackTimer2.stop();
+			attackTimer2.stop();
 			this.attackerOne.setFighting(false);
 			this.attackerTwo.setFighting(false);
 			if (attackerOne instanceof Player){
@@ -104,7 +105,7 @@ public class CombatManager {
 			this.attackerOne.setFighting(false);
 			this.attackerTwo.setFighting(false);
 			((Room)attackerTwo.getLocation()).remove(attackerTwo.getName());
-			attackerTwo.moveToRoom((Room)World.getInstance().getDatabaseObject(0));
+			//attackerTwo.moveToRoom((Room)World.getInstance().getDatabaseObject(0));
 			if (attackerTwo instanceof Player){
 				((Player)attackerTwo).respawn();
 
@@ -116,7 +117,7 @@ public class CombatManager {
 		
 		if(attackerOne.getRoomId() != attackerTwo.getRoomId()){
 			attackTimer.stop();
-			//attackTimer2.stop();
+			attackTimer2.stop();
 			this.attackerOne.setFighting(false);
 			this.attackerTwo.setFighting(false);
 			return false;
@@ -124,7 +125,7 @@ public class CombatManager {
 		
 		if(attackerOne.getRoomId() != attackerTwo.getRoomId()){
 			attackTimer.stop();
-			//attackTimer2.stop();
+			attackTimer2.stop();
 			this.attackerOne.setFighting(false);
 			this.attackerTwo.setFighting(false);
 			return false;
@@ -156,14 +157,14 @@ public class CombatManager {
 	 * opposing player.
 	 *
 	 */
-//	private class Attack2TimerListener implements ActionListener {
-//
-//		public void actionPerformed(ActionEvent arg0) {
-//			
-//			if (isFighting()){
-//				attackerTwo.attack(attackerOne);
-//			}
-//		}
-//		
-//	}
+/*	private class Attack2TimerListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent arg0) {
+			
+			if (isFighting()){
+				attackerTwo.attack(attackerOne);
+			}
+		}
+		
+	}*/
 }

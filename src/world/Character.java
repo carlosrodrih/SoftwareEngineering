@@ -1,6 +1,6 @@
 package world;
 
-public interface PlayerInterface {
+public interface Character extends DatabaseItem{
 	/**
 	 * sendToPlayer() is used to send text to the client of the player's
 	 * controller directly if the movable is a player or send text to the mob if
@@ -19,7 +19,7 @@ public interface PlayerInterface {
 	 * 
 	 * @enemy - The Movable to attack.
 	 */
-	public void attack(Movable enemy);
+	public void attack(Character attackerTwo);
 
 	
 	/**
@@ -46,4 +46,33 @@ public interface PlayerInterface {
 	 * @return int - An int that represents the value of the requested stat.
 	 */
 	public int getStat(Trait stat);
+	
+	/**
+	 * This method insures the correct roomId of the movable, in case there is a
+	 * synch or serialization issue.
+	 * 
+	 * @return An int that represents the movables object reference id in the
+	 *         database.
+	 */
+	public int getRoomId();
+	
+	/**
+	 * getFighting is a small method that is used to prevent a player from
+	 * getting into more than one fight at once. A MOB, however, can be attacked
+	 * by multiple human players.
+	 * 
+	 * @return True if fighting, false otherwise
+	 */
+	public boolean getFighting();
+
+	/**
+	 * setFighting will be used once a player enters combat. It pass in a true
+	 * value to set to the player's isFighting variable.
+	 * 
+	 * @param fighting
+	 *            Ture if entering a fight, false if ending combat
+	 */
+	public void setFighting(boolean fighting);
+	
+	public void setRoomId(int id);
 }

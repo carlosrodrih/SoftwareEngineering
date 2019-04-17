@@ -24,7 +24,7 @@ public class Agressive extends Strategy {
 	 * Aggressive mobiles do nothing special when they attack.
 	 */
 	@Override
-	public void attackBehavior(Mobile me, Movable enemy) {
+	public void attackBehavior(Mobile me, Character enemy) {
 		me.resolveAttack(enemy);
 
 	}
@@ -55,11 +55,11 @@ public class Agressive extends Strategy {
 					&& World.getInstance().playerIsLoggedOn(aPlayer)) {
 
 				mySelf = mob;
-				Room room = (Room) World.getInstance().getDatabaseObject(
+				/*Room room = (Room) World.getInstance().getDatabaseObject(
 						mySelf.getRoomId());
 				room.remove(mySelf.getName());
 				room.add(mySelf);
-				mySelf.setLocation(room);
+				mySelf.setLocation(room);*/
 
 				((Room) mySelf.getLocation()).refreshPlayers();
 				((Room) mySelf.getLocation()).refreshMobiles();

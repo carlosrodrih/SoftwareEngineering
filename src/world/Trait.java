@@ -9,5 +9,9 @@ package world;
  * 
  */
 public enum Trait {
-	AGILITY, STRENGTH, TOUGHNESS, INTELLECT, HITPOINTS, DAMAGE, ACCURACY, EVASION
+	AGILITY, 			//player-only trait for damage, evasion and accuracy
+	STRENGTH,			//player-only trait for damage, toughness and healthpoints
+	INTELLECT, 			//player-only trait for damage and technique
+	HITPOINTS,			//current hp
+	TOUGHNESS, MAXHITPOINTS, DAMAGE, ACCURACY, EVASION, TECHNIQUE
 }

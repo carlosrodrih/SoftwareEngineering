@@ -12,12 +12,8 @@ import world.Weapon;
 public class MobileFactory {
 	private static List<Mobile> availableMonsters; 
 	private static BufferedReader inStream;
-	public MobileFactory(BufferedReader in) {
-		inStream = in;
-		loadMobiles();
-	}
 	
-	private static void loadMobiles() {
+	public static void loadMobiles(BufferedReader in) {
 	try {
 		if(loadLine("title") != "Mobile Database")
 			throw new IOException();
@@ -57,6 +53,7 @@ public class MobileFactory {
 		
 		return words;
 	}
+	
 	public static Mobile getMobile(String mobileName) {
 		Mobile m = null;
 		

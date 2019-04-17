@@ -116,7 +116,7 @@ public class CreateWorld {
 						+ "of the blowing grit, they'd likely need to head inside the "
 						+ "sturdy pre-fabricated buildings that fill the camp. Few "
 						+ "people cross the square unless traveling between the Landing "
-						+ "Pads to the south, the barracks to the west, the armory to "
+						+ "Pads to the south, the barracks to the west, the TOUGHNESSy to "
 						+ "the east, or the camp's gates to the north.");
 
 		Room campGate = world.createRoom("Base Camp: Camp Gate");
@@ -685,7 +685,7 @@ public class CreateWorld {
 				brokenCargoPod);
 
 		world.addGearToWorld(new Armor("Regolith Suit",
-				"Armor made of the planet's processed regolith (very strong).",
+				"TOUGHNESS made of the planet's processed regolith (very strong).",
 				2, 'H'), brokenCargoPod);
 
 		world
@@ -713,7 +713,7 @@ public class CreateWorld {
 				.addGearToWorld(
 						new Armor(
 								"Assault SNO Cuirass",
-								"(Despite it's requirements to withstand orbital strikes, this armor appears to "
+								"(Despite it's requirements to withstand orbital strikes, this TOUGHNESS appears to "
 										+ "be a composite, made out of strange glowing rectangles connected by dotted lines "
 										+ "in some technological pattern.)", 3,
 								'H'), cave);
@@ -728,15 +728,15 @@ public class CreateWorld {
 						hiveQueensLair);
 
 		// Add mobs.
-		world.createMobile("Off-Duty Marine", "An off duty marine.",
-				campSquare, new Greets());
+		/*world.createMobile("Off-Duty Marine", "An off duty marine.",
+				campSquare, new Greets());*/
 
-		Mobile rover = world.createMobile("Rover", "A mechanical dog.",
+		/*Mobile rover = world.createMobile("Rover", "A mechanical dog.",
 				landingPad, new Mutters("Rover Woofs!"));
 		((Mutters) world.getMobile("Rover").getStrategy()).setMobile(rover);
-		world.addToWorld(rover);
+		world.addToWorld(rover);*/
 
-		Mobile sandCat = world
+	/*	Mobile sandCat = world
 				.createMobile(
 						"Sand Cat",
 						"Not exactly a feline, but this sleek, "
@@ -749,7 +749,7 @@ public class CreateWorld {
 				.setMobile(sandCat);
 		world.getMobile("Sand_Cat").setStat(10, Trait.AGILITY);
 		world.getMobile("Sand_Cat").setStat(2, Trait.STRENGTH);
-		world.addToWorld(sandCat);
+		world.addToWorld(sandCat);*/
 
 		world
 				.createMobile(
@@ -798,7 +798,7 @@ public class CreateWorld {
 		((Mobile) world.getMobile("Hive_Scout")).setStat(4, Trait.STRENGTH);
 		((Mobile) world.getMobile("Hive_Scout")).setStat(25, Trait.HITPOINTS);
 		((Mobile) world.getMobile("Hive_Scout")).setStat(8, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Scout")).setStat(3, Trait.ARMOR);
+		((Mobile) world.getMobile("Hive_Scout")).setStat(3, Trait.TOUGHNESS);
 
 		world
 				.createMobile(
@@ -810,23 +810,23 @@ public class CreateWorld {
 		((Mobile) world.getMobile("Hive_Drone")).setStat(4, Trait.STRENGTH);
 		((Mobile) world.getMobile("Hive_Drone")).setStat(15, Trait.HITPOINTS);
 		((Mobile) world.getMobile("Hive_Drone")).setStat(8, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Drone")).setStat(3, Trait.ARMOR);
+		((Mobile) world.getMobile("Hive_Drone")).setStat(3, Trait.TOUGHNESS);
 
 		world
 				.createMobile(
 						"Hive Guardian",
-						"A strange armored beast, like a six-legged rhino with long talons and angry teeth.",
+						"A strange TOUGHNESSed beast, like a six-legged rhino with long talons and angry teeth.",
 						hivePerimeter, new Agressive());
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(9, Trait.STRENGTH);
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(6, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Guardian")).setStat(7, Trait.ARMOR);
+		((Mobile) world.getMobile("Hive_Guardian")).setStat(7, Trait.TOUGHNESS);
 		((Mobile) world.getMobile("Hive_Guardian"))
 				.setStat(40, Trait.HITPOINTS);
 
-		world
+	/*	world
 				.createMobile(
 						"Hive Worker",
-						"A strange insectile creature with the body of a gorilla and thick armored plates moves about ",
+						"A strange insectile creature with the body of a gorilla and thick TOUGHNESSed plates moves about ",
 						hivePerimeter,
 						new Mutters(
 								"A Hive Worker uses it's mandibles to gnaw a thick chunk "
@@ -837,7 +837,7 @@ public class CreateWorld {
 		((Mobile) world.getMobile("Hive_Worker")).setStat(40, Trait.HITPOINTS);
 		((Mutters) world.getMobile("Hive_Worker").getStrategy())
 				.setMobile(world.getMobile("Hive_Worker"));
-
+*/
 		world
 				.createMobile(
 						"Alien Queen",
@@ -847,7 +847,7 @@ public class CreateWorld {
 						hiveQueensLair, new Agressive());
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(16, Trait.STRENGTH);
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(6, Trait.AGILITY);
-		((Mobile) world.getMobile("Hive_Guardian")).setStat(8, Trait.ARMOR);
+		((Mobile) world.getMobile("Hive_Guardian")).setStat(8, Trait.TOUGHNESS);
 		((Mobile) world.getMobile("Hive_Guardian")).setStat(200,
 				Trait.HITPOINTS);
 

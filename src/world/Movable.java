@@ -8,7 +8,7 @@ package world;
  * GearContainers. The are a GearList, in that respect as well as have a
  * GearList instance variables.
  */
-public interface Movable extends DatabaseItem, GearList, PlayerInterface{	
+public interface Movable extends GearList, Character{	
 	/**
 	 * The moveToRoom command handles the upkeep of a room movement by shiftign
 	 * the Mobile object from one room to another, and then forms the String to
@@ -30,33 +30,6 @@ public interface Movable extends DatabaseItem, GearList, PlayerInterface{
 	 *            The name of the gear to be used
 	 */
 	public void use(String itemName);
-
-	/**
-	 * This method insures the correct roomId of the movable, in case there is a
-	 * synch or serialization issue.
-	 * 
-	 * @return An int that represents the movables object reference id in the
-	 *         database.
-	 */
-	public int getRoomId();
-
-	/**
-	 * getFighting is a small method that is used to prevent a player from
-	 * getting into more than one fight at once. A MOB, however, can be attacked
-	 * by multiple human players.
-	 * 
-	 * @return True if fighting, false otherwise
-	 */
-	public boolean getFighting();
-
-	/**
-	 * setFighting will be used once a player enters combat. It pass in a true
-	 * value to set to the player's isFighting variable.
-	 * 
-	 * @param fighting
-	 *            Ture if entering a fight, false if ending combat
-	 */
-	public void setFighting(boolean fighting);
 	
 	public void technique(Movable target);
 }

@@ -18,14 +18,18 @@ public class Player extends DatabaseObject implements Movable {
 
 	private static final long serialVersionUID = 1L;
 	private CharacterClass gameClass;
-	private int agility;
-	private int hitPoints;
-	private int intellect;
-	private int maxHitPoints;
-	private int maxTechnique;
 	private int strength;
+	private int agility;
+	private int intellect;
+	private int hitPoints;
+	private int maxHitPoints;
 	private int technique;
 	private int toughness;
+	private int damage;
+	private int lvl;
+	private int accuracy;
+	private int evasion;
+	//private int maxTechnique;
 	private transient server.Client client;
 	private String password;
 	private GearList gearList;
@@ -45,17 +49,20 @@ public class Player extends DatabaseObject implements Movable {
 	public Player(String name) {
 		super(name);
 		this.roomId = 1;
-		this.agility = 3;
-		this.intellect = 3;
-		this.strength = 3;
-		this.toughness = 3;
-
-		setCharacterClass(Gunner.getInstance());
-
-		this.maxHitPoints = toughness * 10;
+		setStat(3, Trait.AGILITY);
+		setStat(3, Trait.STRENGTH);
+		setStat(3, Trait.INTELLECT);
+		setStat(3, Trait.AGILITY);
+		setStat(3, Trait.TOUGHNESS);
+		setStat(10 * this.strength, Trait.MAXHITPOINTS);
 		this.hitPoints = maxHitPoints;
-		this.maxTechnique = intellect * 5;
-		this.technique = maxTechnique;
+		setStat(5 * this.intellect, Trait.TECHNIQUE);
+		setStat(3 * this.agility, Trait.EVASION);
+		setStat(3 * this.agility, Trait.ACCURACY);
+		int sum = this.agility + this.strength + this.intellect;
+		setStat(sum, Trait.DAMAGE);
+		setCharacterClass(Gunner.getInstance());
+		//this.maxTechnique = intellect * 5;
 		this.isFighting = false;
 
 		this.gearList = new GearContainer(name + "'s gear", name + "'s gear:",
@@ -108,30 +115,39 @@ public class Player extends DatabaseObject implements Movable {
 
 	@Override
 	public void setStat(int value, Trait stat) {
-		if (stat == Trait.AGILITY)
-			agility = value;
-		else if (stat == Trait.HITPOINTS) {
-			if (value > this.maxHitPoints) {
-				hitPoints = this.maxHitPoints;
-			} else {
-				hitPoints = value;
-			}
-		} else if (stat == Trait.INTELLECT)
-			intellect = value;
-		/*else if (stat == Trait.MAXHITPOINTS)
-			maxHitPoints = value;
-		else if (stat == Trait.TECHNIQUE)
-			technique = value;
-		else if (stat == Trait.MAXTECHNIQUE)
-			maxTechnique = value;*/
-		else if (stat == Trait.STRENGTH)
-			strength = value;
-		else {
-			toughness = value;
-			this.maxHitPoints = toughness * 10;
-			hitPoints = maxHitPoints;
+		value *= this.lvl;
+		switch (stat) {
+		case INTELLECT:
+			this.intellect = value;
+			break;
+		case STRENGTH:
+			this.strength = value;
+			break;
+		case AGILITY:
+			this.agility = value;
+			break;
+		case TECHNIQUE:
+			this.technique = value;
+			break;
+		case MAXHITPOINTS:
+			this.maxHitPoints = value;
+			break;
+		case HITPOINTS:
+			this.hitPoints = value;
+			break;
+		case DAMAGE:
+			this.damage = value;
+			break;
+		case TOUGHNESS:
+			this.toughness = value;
+			break;
+		case ACCURACY:
+			this.accuracy = value;
+			break;
+		case EVASION:
+			this.evasion = value;
+			break;
 		}
-
 	}
 
 	@Override
@@ -144,23 +160,29 @@ public class Player extends DatabaseObject implements Movable {
 
 	@Override
 	public int getStat(Trait stat) {
-		if (stat == Trait.AGILITY)
-			return agility;
-		else if (stat == Trait.HITPOINTS)
-			return hitPoints;
-		else if (stat == Trait.INTELLECT)
-			return intellect;
-		/*else if (stat == Trait.MAXHITPOINTS)
-			return maxHitPoints;
-		else if (stat == Trait.TECHNIQUE)
-			return technique;
-		else if (stat == Trait.MAXTECHNIQUE)
-			return maxTechnique;*/
-		else if (stat == Trait.STRENGTH)
-			return strength;
-		else
-			return toughness;
-
+		switch (stat) {
+		case INTELLECT:
+			return this.intellect;
+		case STRENGTH:
+			return this.strength;
+		case AGILITY:
+			return this.agility;
+		case TECHNIQUE:
+			return this.technique;
+		case MAXHITPOINTS:
+			return this.maxHitPoints;
+		case HITPOINTS:
+			return this.hitPoints;
+		case DAMAGE:
+			return this.damage;
+		case TOUGHNESS:
+			return this.toughness;
+		case ACCURACY:
+			return this.accuracy;
+		case EVASION:
+			return this.evasion;
+		default: return 0;
+		}
 	}
 
 	@Override
@@ -171,10 +193,10 @@ public class Player extends DatabaseObject implements Movable {
 	}
 
 	@Override
-	public void attack(Movable enemy) {
+	public void attack(Character enemy) {
 		// Determine Hit
-		int attackRoll = (int) (Math.random() * 10) + this.agility
-				- enemy.getStat(Trait.AGILITY);
+		int attackRoll = (int) (Math.random() * 10) + this.accuracy
+				- enemy.getStat(Trait.EVASION);
 
 		// Miss Conditions
 		if (attackRoll < 3) {
@@ -184,39 +206,12 @@ public class Player extends DatabaseObject implements Movable {
 
 			// Attack hits!
 		} else {
-			int damage = 0;
-
-			// Versus Mobiles
-			if (enemy instanceof Mobile) {
-				damage = Math.max(0, (int) (this.strength
-						+ this.getWeapon().getDamage() - enemy
-						.getStat(Trait.TOUGHNESS)));
-			}
-			// Versus Players
-			if (enemy instanceof Player) {
-				damage = Math
-						.max(1, (int) (
-						// Add Str,
-								this.strength
-								// Add Weapon Damage,
-										+ this.getWeapon().getDamage()
-										// Minus a third of player's Toughness
-										- (((Player) enemy)
-												.getStat(Trait.TOUGHNESS) / 3)
-								// Minus armor's DR
-								- ((Player) enemy).getArmor()
-										.getDamageReduction()));
-
-			}
-
+			int	damage = Math.max(1, (int) (this.damage - enemy.getStat(Trait.TOUGHNESS) / 3));
 			int newHP = enemy.getStat(Trait.HITPOINTS) - damage;
 			enemy.setStat(newHP, Trait.HITPOINTS);
-			this.sendToPlayer("You hit " + ((DatabaseObject) enemy).getName()
-					+ " for " + damage + " hitpoints!");
-			this.sendToPlayer(enemy.getName() + " HP: "
-					+ ((Movable) enemy).getStat(Trait.HITPOINTS));
-			enemy.sendToPlayer(this.getName() + " damages you for " + damage
-					+ " hitpoints!");
+			this.sendToPlayer("You hit " + enemy.getName() + " for " + damage + " hitpoints!");
+			this.sendToPlayer(enemy.getName() + " HP: "	+ enemy.getStat(Trait.HITPOINTS));
+			enemy.sendToPlayer(this.getName() + " damages you for " + damage + " hitpoints!");
 		}
 
 	}
@@ -341,8 +336,7 @@ public class Player extends DatabaseObject implements Movable {
 		result += "Toughness: " + this.toughness + "\n";
 		result += "HitPoints: " + this.hitPoints + "/" + this.maxHitPoints
 				+ "\n";
-		result += "Technique: " + this.technique + "/" + this.maxTechnique
-				+ "\n";
+		result += "Technique: " + this.technique + "\n";
 		result += "Weapon in Hand: " + this.getWeapon().getName() + "(Damage: "
 				+ this.getWeapon().getDamage() + ")\n";
 		result += "Armor Worn: " + this.getArmor().getName() + "(Rating: "
@@ -350,6 +344,14 @@ public class Player extends DatabaseObject implements Movable {
 		return result;
 	}
 
+	public void setLvl(int lvl) {
+		this.lvl = lvl;
+	}
+	
+	public int getLvl() {
+		return this.lvl;
+	}
+	
 	/**
 	 * This method sets a player's password.
 	 * 
@@ -395,7 +397,8 @@ public class Player extends DatabaseObject implements Movable {
 				this.armorEquipped = (Armor) armorToEquip;
 				this.sendToPlayer("You have equipped " + armorToEquip.getName()
 						+ " armor.");
-
+				int temp = this.toughness + this.armorEquipped.getDamageReduction();
+				setStat(temp, Trait.TOUGHNESS);
 			} else {
 				this
 						.sendToPlayer("You do not have that armor in your inventory");
@@ -429,10 +432,10 @@ public class Player extends DatabaseObject implements Movable {
 				this.weaponEquipped = (Weapon) weaponToEquip;
 				this.sendToPlayer("You decided to use the "
 						+ weaponToEquip.getName() + " weapon.");
-
+				int temp = this.damage + this.weaponEquipped.getDamage();
+				setStat(temp, Trait.DAMAGE);
 			} else {
-				this
-						.sendToPlayer("You do not have that weapon in your inventory");
+				this.sendToPlayer("You do not have that weapon in your inventory");
 			}
 		} else {
 			this.sendToPlayer("That is a not a weapon item.");
@@ -540,6 +543,11 @@ public class Player extends DatabaseObject implements Movable {
 	
 	public void technique(Movable target) {
 		gameClass.technique(this, target);
+	}
+
+	@Override
+	public void setRoomId(int id) {
+		this.roomId = id;
 	}
 
 }

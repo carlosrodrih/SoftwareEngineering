@@ -1,13 +1,18 @@
 package world;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
+
+import util.MobileFactory;
+import util.PlayerFactory;
 
 /**
  * World class will hold all of the objects that are contained in the world. It
@@ -27,14 +32,19 @@ public class World implements Runnable {
 
 	public static final String ROOTDIR = "C:\\";
 
+	private BufferedReader in;
 	private List<DatabaseObject> databaseArray = new ArrayList<DatabaseObject>();
 	private int objectNumbers;
+	private List<Mobile> mobList = new ArrayList();
 	private Map<String, Player> players = new HashMap<String, Player>();
 	private Map<String, Mobile> mobiles = new HashMap<String, Mobile>();
 	private Set<String> playersLoggedOn = new TreeSet<String>();
 
 	// This private constructor will initialize necessary variables.
-	private World() {
+	private World(String mobsFile, String roomsFile, String itemsFile) {
+		in = new BufferedReader( new FileReader(mobsFile));
+		MobileFactory.loadMobiles(in);
+		// add items factory and rooms factory
 		this.saveThread = new Thread(this);
 		this.saveThread.start();
 	}
@@ -213,13 +223,16 @@ public class World implements Runnable {
 	 * 
 	 * @return The created MOB, or null if duplicate
 	 */
-	public Mobile createMobile(String name, String description, Room room,
-			Strategy strategy) {
+/*	public void createMobile(String name, Room room) {
 
-		if (this.nameExists(name.toLowerCase()))
-			return null;
+		Mobile temp = MobileFactory.getMobile(name);
+		if(temp != null) {
 
-		Mobile temp = new Mobile(name);
+			World.getInstance().addMobToWorld(temp);
+			room.add(temp);
+			//put returned mob to the room
+		}
+		
 		if (this.mobiles.put(temp.getName().toLowerCase(), temp) == null) {
 			World.getInstance().addToWorld(temp);
 			temp.setStrategy(strategy);
@@ -227,13 +240,28 @@ public class World implements Runnable {
 			temp.moveToRoom(room);
 			temp.setStart(room);
 			temp.setDescription(description);
-			
 			return temp;
 		}
 
 		return null;
-	}
+	}*/
 
+	private void addMobToWorld(String name, Room room) {
+		
+		Mobile temp = MobileFactory.getMobile(name);
+		if(temp != null) {
+			for(Mobile m : mobList) {
+				if(m.getLocation() == room) {
+					return;
+				}
+				room.add(temp); // put returned mob to the room
+			}
+		}
+		World.getInstance().mobList.add(temp);
+	}
+		
+	
+		
 	/**
 	 * addGearToWorld is called to add a piece of gear to the world in a
 	 * specific location. It needs to take in a gear reference and a location.
@@ -260,9 +288,9 @@ public class World implements Runnable {
 		if (location instanceof Player) {
 			((Player) location).addGear(gear);
 		}
-		if (location instanceof Mobile) {
+		/*if (location instanceof Mobile) {
 			((Mobile) location).addGear(gear);
-		}
+		}*/
 		gear.setLocation(location);
 	}
 
@@ -274,13 +302,13 @@ public class World implements Runnable {
 	 * @return List of MOB's in the world
 	 */
 	public List<Mobile> getMobiles() {
-		List<Mobile> result = new ArrayList<Mobile>();
+	/*	List<Mobile> result = new ArrayList<Mobile>();
 
 		for (Mobile mobile : this.mobiles.values()) {
 			result.add(mobile);
-		}
+		}*/
 
-		return result;
+		return mobList;
 	}
 
 	/**

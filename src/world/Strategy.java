@@ -24,7 +24,7 @@ public abstract class Strategy implements Serializable {
 	 * @param me The MOB using the strategy
 	 * @param enemy The potential enemy
 	 */
-	public abstract void attackBehavior(Mobile me, Movable enemy);
+	public abstract void attackBehavior(Mobile me, Character enemy);
 	
 	/**
 	 * reactToSend will be used whenever a player enters the room a mobile is currently in. If
