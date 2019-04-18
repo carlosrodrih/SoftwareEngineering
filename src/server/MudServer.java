@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.*;
 import java.util.*;
 
+import util.PlayerFactory;
 import world.CreateWorld;
 import world.Interpreter;
 import world.World;
@@ -61,8 +62,8 @@ public class MudServer {
 		
 		if (!Interpreter.getInstance().getWorld().confirmPlayer(
 				"administrator", "password")) {
-			Interpreter.getInstance().getWorld().createPlayer("administrator",
-					"password");
+			//Interpreter.getInstance().getWorld().createPlayer("administrator","password"); 
+			PlayerFactory.createPlayer("administrator", "password");
 			Interpreter.getInstance().getWorld().saveWorld();
 			Interpreter.getInstance().getWorld().savePlayer(
 					Interpreter.getInstance().getWorld().getPlayer(

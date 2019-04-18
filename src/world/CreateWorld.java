@@ -1,5 +1,8 @@
 package world;
 
+import util.ExitSetter;
+import util.RoomFactory;
+
 /**
  * CreateWorld will be called only if there is not a world already saved in the
  * current directory specified in World. It will create rooms and exits for
@@ -33,38 +36,18 @@ public class CreateWorld {
 	 * Test method, this will not be used.
 	 */
 	public void defaultWorld() {
-		Room zero = world.createRoom("Home Room");
-		world.addToWorld(zero);
+		Room zero = RoomFactory.createRoom("Home Room");
+		Room central = RoomFactory.createRoom("Central Chamber", "This is the Central Room.");
+		Room north = RoomFactory.createRoom("North Wing", "This is the North Wing");
+		Room east = RoomFactory.createRoom("East Wing", "This is the East Wing");
+		Room south = RoomFactory.createRoom("South Wing", "This is the South Wing");
+		Room west = RoomFactory.createRoom("West Wing", "This is the West Wing");
 
-		Room central = world.createRoom("Central Chamber");
-		central.setDescription("This is the Central Room.");
-		world.addToWorld(central);
-
-		Room north = world.createRoom("North Wing");
-		north.setDescription("This is the North Wing");
-		world.addToWorld(north);
-
-		Room east = world.createRoom("East Wing");
-		east.setDescription("This is the East Wing");
-		world.addToWorld(east);
-
-		Room south = world.createRoom("South Wing");
-		south.setDescription("This is the South Wing");
-		world.addToWorld(south);
-
-		Room west = world.createRoom("West Wing");
-		north.setDescription("This is the West Wing");
-		world.addToWorld(west);
-
-		central.setExitDestination(Direction.NORTH, north);
-		central.setExitDestination(Direction.EAST, east);
-		central.setExitDestination(Direction.SOUTH, south);
-		central.setExitDestination(Direction.WEST, west);
-
-		south.setExitDestination(Direction.NORTH, central);
-		west.setExitDestination(Direction.EAST, central);
-		north.setExitDestination(Direction.SOUTH, central);
-		east.setExitDestination(Direction.WEST, central);
+		ExitSetter.SetExits(central, north, south, east, west, null, null);
+		ExitSetter.SetExits(south, central, null, null, null, null, null);
+		ExitSetter.SetExits(west, null, null, central, null, null, null);
+		ExitSetter.SetExits(north, null, central, null, null, null, null);
+		ExitSetter.SetExits(east, null, null, null, central, null, null);
 
 		Weapon laser = new Weapon("STING", "A laser sword from days of old.");
 		world.addToWorld(laser);
@@ -72,14 +55,13 @@ public class CreateWorld {
 		laser.setLocation(north);
 		north.add(laser);
 
-		Room environment = world.createRoom("Environment Room");
+		Room environment = RoomFactory.createRoom("Environment Room");
 		zero.add(environment);
 		environment.add(central);
 		environment.add(north);
 		environment.add(east);
 		environment.add(south);
 		environment.add(west);
-		world.addToWorld(environment);
 
 		System.out.println("Central Room");
 		System.out.println(central.generateDescription());
@@ -96,40 +78,33 @@ public class CreateWorld {
 	public void buildRooms() {
 
 		// Camp
-		Room zero = world.createRoom("Home Room");
+		Room zero = RoomFactory.createRoom("Home Room", null);
 
-		Room landingPad = world.createRoom("Base Camp: Landing Pad");
-		landingPad
-				.setDescription("Ships fly in low before disgorging their "
+		Room landingPad = RoomFactory.createRoom("Base Camp: Landing Pad", "Ships fly in low before disgorging their "
 						+ "small contingent of equipment, supplies, and more rarely, "
 						+ "people. The landing pads are surrounded with constantly "
 						+ "swirling dust, driving most new arrivals northward into the "
 						+ "shelter of the walled camp amidst the featureless wastes.");
 
-		Room campSquare = world.createRoom("Base Camp: Camp Square");
+		Room campSquare = RoomFactory.createRoom("Base Camp: Camp Square", "The camp bustles with motion. Here "
+				+ "inside the walls the storm of wind and dust outside is "
+				+ "subdued, but not entirely abated. If one wanted to get out "
+				+ "of the blowing grit, they'd likely need to head inside the "
+				+ "sturdy pre-fabricated buildings that fill the camp. Few "
+				+ "people cross the square unless traveling between the Landing "
+				+ "Pads to the south, the barracks to the west, the armory to "
+				+ "the east, or the camp's gates to the north.");
 		landingPad.setExitDestination(Direction.NORTH, campSquare);
 		campSquare.setExitDestination(Direction.SOUTH, landingPad);
-		campSquare
-				.setDescription("The camp bustles with motion. Here "
-						+ "inside the walls the storm of wind and dust outside is "
-						+ "subdued, but not entirely abated. If one wanted to get out "
-						+ "of the blowing grit, they'd likely need to head inside the "
-						+ "sturdy pre-fabricated buildings that fill the camp. Few "
-						+ "people cross the square unless traveling between the Landing "
-						+ "Pads to the south, the barracks to the west, the TOUGHNESSy to "
-						+ "the east, or the camp's gates to the north.");
 
-		Room campGate = world.createRoom("Base Camp: Camp Gate");
+		Room campGate = RoomFactory.createRoom("Base Camp: Camp Gate", "Guards and emplaced guns keep the camp safe "
+				+ "from outside threats, but once you walk north into the wastes, "
+				+ "you're on your own. the core of the mercenary camp lies deeper "
+				+ "behind the walls, south.");
 		campSquare.setExitDestination(Direction.NORTH, campGate);
 		campGate.setExitDestination(Direction.SOUTH, landingPad);
-		campGate
-				.setDescription("Guards and emplaced guns keep the camp safe "
-						+ "from outside threats, but once you walk north into the wastes, "
-						+ "you're on your own. the core of the mercenary camp lies deeper "
-						+ "behind the walls, south.");
 
-		Room baseCampEnvironment = world
-				.createRoom("You shouldn't be seeing this!");
+		Room baseCampEnvironment = RoomFactory.createRoom("You shouldn't be seeing this!");
 		baseCampEnvironment.add(landingPad);
 		baseCampEnvironment.add(campSquare);
 		baseCampEnvironment.add(campGate);
@@ -137,11 +112,8 @@ public class CreateWorld {
 		// end camp creation.
 
 		// Add bunkers
-		Room landingPadBunker = world
-				.createRoom("Base Camp: Landing Pad Bunker");
-
-		landingPadBunker
-				.setDescription("A ladder in the middle of the room. The walls are made of steel, "
+		Room landingPadBunker = RoomFactory.createRoom("Base Camp: Landing Pad Bunker", 
+				"A ladder in the middle of the room. The walls are made of steel, "
 						+ "and there are storage crates all around you.");
 
 		landingPad.setExitDestination(Direction.DOWN, landingPadBunker);

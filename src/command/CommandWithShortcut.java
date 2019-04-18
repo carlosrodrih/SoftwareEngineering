@@ -10,6 +10,10 @@ public abstract class CommandWithShortcut extends Command{
 		shortcut = sc;
 	}
 	
+	public boolean hasShortcut() {
+		return true;
+	}
+	
 	public String helpText() {
 		return "- " + name + "/" + shortcut + " " + helpDesc;
 	}

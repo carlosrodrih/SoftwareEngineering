@@ -20,7 +20,8 @@ public class ShutdownCommand extends Command {
 			world.saveWorld();
 			System.exit(0);
 		}
-		// add else condition?
+		else
+			player.sendToPlayer("You must be a game administrator to use this command.");
 	}
 
 }

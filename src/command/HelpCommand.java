@@ -13,7 +13,7 @@ public class HelpCommand extends Command {
 
 	@Override
 	public synchronized void execute(Player player) {
-		player.sendToPlayer(Interpreter.getInstance().commandDescriptions());
+		player.sendToPlayer(Interpreter.commandDescriptions());
 	}
 
 }

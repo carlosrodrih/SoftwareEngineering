@@ -189,7 +189,7 @@ public class World implements Runnable {
 	 * @return - A boolean that represents whether or not the player addition
 	 *         was successful.
 	 */
-	public Player createPlayer(String name, String password) {
+	/*public Player createPlayer(String name, String password) {
 
 		if (this.playerExists(name))
 			return null;
@@ -203,6 +203,10 @@ public class World implements Runnable {
 		}
 
 		return temp;
+	}*/
+	
+	public Player registerPlayer(String name, Player player) {
+		return players.put(name, player);
 	}
 
 	/**

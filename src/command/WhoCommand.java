@@ -9,7 +9,7 @@ public class WhoCommand extends Command {
 	private World world;
 
 	public WhoCommand() {
-		super("who", "moves the player west.");
+		super("who", ": lists all the players that are logged in.");
 	}
 
 	@Override

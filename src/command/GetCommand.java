@@ -47,8 +47,7 @@ public class GetCommand extends Command {
 			player.sendToPlayer(_itemName + " is not in the room.");
 		}
 		else {
-			if (world.playerExists(_target)
-					&& world.playerIsLoggedOn(_target)) {
+			if (world.playerExists(_target) && world.playerIsLoggedOn(_target)) {
 				if (!world.getPlayer(_target).giveGear(
 						world.getPlayer(_target), _itemName,
 						player.getName())) {

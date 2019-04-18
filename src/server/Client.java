@@ -3,6 +3,9 @@ package server;
 import java.io.*;
 import java.net.*;
 
+import util.ClassSetter;
+import util.PlayerFactory;
+import world.CharacterClass;
 import world.Dreadnaught;
 import world.Gunner;
 import world.Interpreter;
@@ -291,11 +294,7 @@ public class Client implements Runnable {
 				shutdown();
 				return "";
 			} else if (temp.equalsIgnoreCase("commands")) {
-				String result = "";
-				for (String command : interpreter.getCommandDescriptions()) {
-					result += command + '\n';
-				}
-				this.sendReply(result);
+				this.sendReply(Interpreter.getInstance().commandDescriptions());
 				return "";
 			} else {
 				return temp;
@@ -383,29 +382,20 @@ public class Client implements Runnable {
 			// check password
 			if (this.confirmPassword(firstPassword, confirmPassword)) {
 				// add to world
-				this.player = interpreter.getWorld().createPlayer(newName,
+				this.player = PlayerFactory.createPlayer(newName,
 						firstPassword);
-				if (player != null) {
+				if (!player.equals(null)) {
 					this.interpreter.getWorld().savePlayer(this.player);
 					String characterClass = "";
-					while (!(characterClass.equalsIgnoreCase("dreadnaught") || characterClass
-							.equalsIgnoreCase("gunner"))
-							&& (state != ClientState.DONE)) {
-						this.sendReply("What character class"
-								+ " would you like to be:"
-								+ " Gunner or Dreadnaught?");
+					CharacterClass toSet = null;
+					while (toSet.equals(null) && (state != ClientState.DONE)) {
+						this.sendReply("What character class would you like to be: " + ClassSetter.getClassOptions());
 						characterClass = receiveCommand();
+						toSet = ClassSetter.setCharacterClass(player, characterClass);
 					}
 					if (state != ClientState.DONE) {
-						if (characterClass.equalsIgnoreCase("gunner")) {
-							this.player.setClient(this);
-							this.player.setCharacterClass(Gunner.getInstance());
-						}
-						if (characterClass.equalsIgnoreCase("dreadnaught")) {
-							this.player.setClient(this);
-							this.player.setCharacterClass(Dreadnaught
-									.getInstance());
-						}
+						this.player.setClient(this);
+						this.player.setCharacterClass(toSet);
 						this.addToWorld();
 					} else {
 						player = null;

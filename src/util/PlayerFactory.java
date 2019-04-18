@@ -3,30 +3,18 @@ package util;
 import world.*;
 
 public class PlayerFactory {
-	private static CharacterClass[] availableClasses = {Gunner.getInstance(), Dreadnaught.getInstance()};
-	private static CharacterClass currentClass;
-	private static String name;
-	private static String password;
-	
-	public static void parseInput(String playerName, String playerClass, String pw) {
-		name = playerName;
-		password = pw;
+	public static Player createPlayer(String playerName, String pw) {
+		if (World.getInstance().playerExists(playerName))
+			return null;
+
+		Player temp = new Player(playerName);
+		temp.setPassword(pw);
+		temp.setLocation((Room) World.getInstance().getDatabaseObject(1));
 		
-		for (CharacterClass c : availableClasses){
-			if (currentClass != null)
-				continue;
-			else {
-				if (playerClass.equalsIgnoreCase(c.toString()))
-					currentClass = c;
-			}
+		if (World.getInstance().registerPlayer(temp.getName().toLowerCase(), temp) == null) {
+			World.getInstance().addToWorld(temp);
 		}
-	}
-	
-	public static Player createPlayer() {
-		Player ret = new Player(name);
-		ret.setCharacterClass(currentClass);
-		ret.setPassword(password);
-		
-		return ret;
+
+		return temp;
 	}
 }

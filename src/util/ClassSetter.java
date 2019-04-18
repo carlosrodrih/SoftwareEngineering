@@ -49,10 +49,10 @@ public class ClassSetter {
 			}
 		}
 		
-		if (ret != null) 
+		if (!ret.equals(null)) 
 			return ret;
 		
 		player.sendToPlayer(input + " is not a character class.");
-		return player.getCharacterClass();
+		return ret;
 	}
 }
