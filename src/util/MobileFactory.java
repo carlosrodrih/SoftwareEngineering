@@ -13,6 +13,12 @@ public class MobileFactory {
 	private static List<Mobile> availableMonsters; 
 	private static BufferedReader inStream;
 	
+	public static void defaultMobile(String name, int level, int maxHealth, Gear gear, int toughness, int accuracy, int evasion,
+											int damage, String strat, String desc) {
+		availableMonsters.add(new Mobile(name, level, maxHealth, gear, toughness, accuracy, evasion, damage, strat, desc));
+		
+	}
+	
 	public static void loadMobiles(BufferedReader in) {
 	try {
 		if(loadLine("title") != "Mobile Database")
@@ -20,7 +26,7 @@ public class MobileFactory {
 		//add mobile parameters to pass to mobile constructor
 		int num;
 		do {
-			num = Integer.parseInt(loadLine("ref"));
+			num = Integer.parseInt(loadLine("Number of Monsters"));
 			String name = loadLine("name");
 			int level = Integer.parseInt(loadLine("level"));
 			int maxHealth = Integer.parseInt(loadLine("maxHealth"));
@@ -38,7 +44,8 @@ public class MobileFactory {
 			    gear = new Armor("", ""); // add armor construction
 			
 			availableMonsters.add(new Mobile(name, level, maxHealth, gear, toughness, accuracy, evasion, damage, strat, desc));
-		} while (num != 0);
+			num--;
+		} while (num > 0);
 	}
 	
 	catch(Exception e) {
