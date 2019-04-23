@@ -39,6 +39,7 @@ public class World implements Runnable {
 	private Map<String, Player> players = new HashMap<String, Player>();
 	private Map<String, Mobile> mobiles = new HashMap<String, Mobile>();
 	private Set<String> playersLoggedOn = new TreeSet<String>();
+	private Mobile mapBoss;
 
 	// This private constructor will initialize necessary variables.
 	private World(String mobsFile, String roomsFile, String itemsFile) {
@@ -49,6 +50,16 @@ public class World implements Runnable {
 		this.saveThread.start();
 	}
 
+	public Mobile getMapBoss() {
+		return mapBoss;
+	}
+	
+	public void setMapBoss(String name, Room room) {
+		Mobile m = MobileFactory.getMobile(name);
+		addMobToWorld(name, room);
+		this.mapBoss = m; 
+	}
+	
 	/**
 	 * addToWorld will be called in the WorldFactory. All objects will be hard
 	 * coded in the WorldFactory and added using this addToWorld method. It will
@@ -250,7 +261,7 @@ public class World implements Runnable {
 		return null;
 	}*/
 
-	private void addMobToWorld(String name, Room room) {
+	public void addMobToWorld(String name, Room room) {
 		
 		Mobile temp = MobileFactory.getMobile(name);
 		if(temp != null) {
@@ -261,7 +272,7 @@ public class World implements Runnable {
 				room.add(temp); // put returned mob to the room
 			}
 		}
-		World.getInstance().mobList.add(temp);
+		this.mobList.add(temp);
 	}
 		
 	
@@ -743,6 +754,12 @@ public class World implements Runnable {
 	 * 
 	 * @return The set of players logged on
 	 */
+	
+	public boolean bossIsDead() {
+		
+		return mapBoss.getStat(Trait.HITPOINTS) == 0;
+	}
+	
 	public Set<String> getPlayersLoggedOn() {
 		return this.playersLoggedOn;
 	}
