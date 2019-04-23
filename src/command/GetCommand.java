@@ -14,13 +14,13 @@ public class GetCommand extends Command {
 	private World world;
 
 	public GetCommand(String item) {
-		super("get", "<item>: gets item from room. Also: get <item> <target>: gets item from player/MOB/item.");
+		super("get", "<item>: gets item from room. Also: get <item> <target>: gets item from the target item.");
 		_itemName = item.toLowerCase();
 		_target = null;
 	}
 	
 	public GetCommand(String item, String target) {
-		super("get", "get <item>: gets item from room. Also: get <item> <target>: gets item from player/MOB/item.");
+		super("get", "get <item>: gets item from room. Also: get <item> <target>: gets item from the target item.");
 		_itemName = item.toLowerCase();
 		_target = target;
 	}
@@ -47,7 +47,7 @@ public class GetCommand extends Command {
 			player.sendToPlayer(_itemName + " is not in the room.");
 		}
 		else {
-			if (world.playerExists(_target) && world.playerIsLoggedOn(_target)) {
+			/*if (world.playerExists(_target) && world.playerIsLoggedOn(_target)) {
 				if (!world.getPlayer(_target).giveGear(
 						world.getPlayer(_target), _itemName,
 						player.getName())) {
@@ -64,7 +64,7 @@ public class GetCommand extends Command {
 							+ " does not have that item.");
 				}
 				return;
-			}
+			}*/
 			for (Gear roomItem : ((Room) player.getLocation())
 					.listGear()) {
 				if (roomItem instanceof GearContainer
