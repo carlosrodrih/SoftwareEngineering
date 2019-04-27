@@ -13,7 +13,7 @@ package world;
  * @author Matt Turner, Ross Bottorf, Zach Boe, Jonathan Perrine
  * 
  */
-public abstract class Gear extends DatabaseObject implements Comparable<Gear> {
+public abstract class Gear extends DatabaseObject  {
 
 	private static final long serialVersionUID = 1L;
 	private int itemLevel;
@@ -126,10 +126,6 @@ public abstract class Gear extends DatabaseObject implements Comparable<Gear> {
 	 * The compareTo(Gear) method compares the Gear's name to the passed in
 	 * Gear's name.
 	 */
-	@Override
-	public int compareTo(Gear gear) {
-		return this.getName().compareTo(((Gear) gear).getName());
-	}
 
 	/**
 	 * This method returns the default behavior the the gear.

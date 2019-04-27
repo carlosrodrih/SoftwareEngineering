@@ -3,6 +3,9 @@ package world;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
 
 /**
  * GearContainer will act as a bag for the player. It will be able to hold
@@ -37,8 +40,7 @@ public class GearContainer extends Gear implements GearList {
 	@Override
 	public boolean addGear(Gear item) {
 
-		if (item instanceof GearContainer
-				&& !((GearContainer) gearList).canBeCarried()) {
+		if (item instanceof GearContainer && !((GearContainer) gearList).canBeCarried()) {
 			return false;
 		}
 
@@ -47,7 +49,6 @@ public class GearContainer extends Gear implements GearList {
 		}
 
 		if (this.gearList.add(item)) {
-
 			item.setLocation(this);
 			return true;
 		}
@@ -107,7 +108,7 @@ public class GearContainer extends Gear implements GearList {
 				&& World.getInstance().playerIsLoggedOn(otherName)) {
 			other = World.getInstance().getPlayer(otherName);
 		} else if (World.getInstance().mobileExists(otherName)) {
-			other = World.getInstance().getMobile(otherName);
+			other = (GearList) World.getInstance().getMobile(otherName);
 		} else {
 			if (loc != null) {
 				for (Gear roomItem : loc.listGear()) {
@@ -197,7 +198,7 @@ public class GearContainer extends Gear implements GearList {
 	public String inspect() {
 		String result = super.getDescription() + "\n";
 		if (!this.gearList.isEmpty()) {
-			Collections.sort(this.gearList);
+			Collections.sort(this.gearList, Comparator.comparing(Gear::getName));
 			result += "Items:\n";
 			for (Gear gearList : this.gearList) {
 				result += gearList.getName() + " " + gearList.getDescription()
@@ -212,9 +213,25 @@ public class GearContainer extends Gear implements GearList {
 		movable.sendToPlayer(movable.inspect());
 	}
 
+	
+	/*
+	class Sortbyroll implements Comparator<Gear> 
+	{ 
+	    // Used for sorting in ascending order of 
+	    // roll number 
+	    public int compare(Gear a, Gear b) 
+	    { 
+	        return a.getName() - b.getName(); 
+	    } 
+	}
+	
+	*/
+	
 	@Override
 	public List<Gear> listGear() {
-		Collections.sort(gearList);
+	
+		Collections.sort(this.gearList, Comparator.comparing(Gear::getName));
+		
 		return this.gearList;
 	}
 
