@@ -547,22 +547,44 @@ public class CreateWorld {
 				landingPad, new Mutters("Rover Woofs!"));
 		((Mutters) world.getMobile("Rover").getStrategy()).setMobile(rover);
 		world.addToWorld(rover);*/
+		
+		  world
+				.createMobile(
+						"Fog Crawler",
+						"Based on their anatomy they are most likely a form of mutated mantis shrimp ",
+			                                       
+						hiveCathedral, new Agressive());								
+		((Mobile) world.getMobile("Fog_Crawle")).setStat(10, Trait.AGILITY);
+		((Mobile) world.getMobile("Fog_Crawle")).setStat(6, Trait.STRENGTH);
+		((Mobile) world.getMobile("Fog_Crawle")).setStat(4, Trait.TOUGHNESS);
+		((Mobile) world.getMobile("Fog_Crawle")).setStat(25,Trait.HITPOINTS);
+		
                  world
 				.createMobile(
 						"Wild Mongrel",
-						"Its the kind of rabid wolf that you dont usualy want to encounter"
-			                                        + "with out any hair and a vicious look"
-						canyon, new PassiveAgressive());								
+						"Its the kind of rabid wolf that you dont usualy want to encounter "
+			                                        + "with out any hair and a vicious look",
+						canyon, new Agressive());								
 		((Mobile) world.getMobile("Wild_Mongrel")).setStat(8, Trait.AGILITY);
 		((Mobile) world.getMobile("Wild_Mongrel")).setStat(6, Trait.STRENGTH);
 		((Mobile) world.getMobile("Wild_Mongrel")).setStat(2, Trait.TOUGHNESS);
 		((Mobile) world.getMobile("Wild_Mongrel")).setStat(20,Trait.HITPOINTS);
 		
+		  world
+				.createMobile(
+						"Deathclaw",
+						"Similar to reptile they are strong predators that "
+			                                        + "will attack the player character on sight",
+						cave, new Agressive());								
+		((Mobile) world.getMobile("Deathclaw")).setStat(12, Trait.STRENGTH);
+		((Mobile) world.getMobile("Deathclaw")).setStat(2, Trait.TOUGHNESS);
+		
 		 world
 				.createMobile(
 						"Sand Cat",
-						"Not exactly a feline, but this sleek Sand Cat burrows into the ground, leaving a raised trail in the earth."
-						canyon, new PassiveAgressive());								
+						"Not exactly a feline, but this sleek Sand Cat"
+						    + " burrows into the ground, leaving a raised Sand Cattrail in the earth.",
+			                        canyon, new PassiveAgressive());										
 		((Mobile) world.getMobile("Sand_Cat")).setStat(10, Trait.AGILITY);
 		((Mobile) world.getMobile("Sand_Cat")).setStat(2, Trait.STRENGTH);
 		((Mobile) world.getMobile("Sand_Cat")).setStat(10,Trait.HITPOINTS);
