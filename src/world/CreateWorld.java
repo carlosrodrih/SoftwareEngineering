@@ -547,29 +547,34 @@ public class CreateWorld {
 				landingPad, new Mutters("Rover Woofs!"));
 		((Mutters) world.getMobile("Rover").getStrategy()).setMobile(rover);
 		world.addToWorld(rover);*/
-
-	/*	Mobile sandCat = world
+                 world
+				.createMobile(
+						"Wild Mongrel",
+						"Its the kind of rabid wolf that you dont usualy want to encounter"
+			                                        + "with out any hair and a vicious look"
+						canyon, new PassiveAgressive());								
+		((Mobile) world.getMobile("Wild_Mongrel")).setStat(8, Trait.AGILITY);
+		((Mobile) world.getMobile("Wild_Mongrel")).setStat(6, Trait.STRENGTH);
+		((Mobile) world.getMobile("Wild_Mongrel")).setStat(2, Trait.TOUGHNESS);
+		((Mobile) world.getMobile("Wild_Mongrel")).setStat(20,Trait.HITPOINTS);
+		
+		 world
 				.createMobile(
 						"Sand Cat",
-						"Not exactly a feline, but this sleek, "
-								+ "hard to catch creature is similar to a housecat in shape. "
-								+ "Also, it has huge digging claws. Weird.",
-						landingPad,
-						new Mutters(
-								"Sand Cat burrows into the ground, leaving a raised trail in the earth."));
-		((Mutters) world.getMobile("Sand_Cat").getStrategy())
-				.setMobile(sandCat);
-		world.getMobile("Sand_Cat").setStat(10, Trait.AGILITY);
-		world.getMobile("Sand_Cat").setStat(2, Trait.STRENGTH);
-		world.addToWorld(sandCat);*/
+						"Not exactly a feline, but this sleek Sand Cat burrows into the ground, leaving a raised trail in the earth."
+						canyon, new PassiveAgressive());								
+		((Mobile) world.getMobile("Sand_Cat")).setStat(10, Trait.AGILITY);
+		((Mobile) world.getMobile("Sand_Cat")).setStat(2, Trait.STRENGTH);
+		((Mobile) world.getMobile("Sand_Cat")).setStat(10,Trait.HITPOINTS);
+		
+			
 
 		world
 				.createMobile(
 						"Giant Scorpion",
 						"A giant scorpion the likes of which the world has never seen.",
 						cave, new PassiveAgressive());
-		((Mobile) world.getMobile("Giant_Scorpion"))
-				.setStat(40, Trait.STRENGTH);
+		((Mobile) world.getMobile("Giant_Scorpion")).setStat(40, Trait.STRENGTH);
 		((Mobile) world.getMobile("Giant_Scorpion")).setStat(3, Trait.AGILITY);
 
 		world
@@ -593,9 +598,11 @@ public class CreateWorld {
 		((Mobile) world.getMobile("Medium_Scorpion")).setStat(16,
 				Trait.HITPOINTS);
 
-		world.createMobile("Lurker",
-				"A monstrous spider-like creature, whose fangs drip acid.",
-				cargoPod, new Agressive());
+		world
+			       .createMobile("Lurker",
+				                "A monstrous spider-like creature, whose fangs drip acid.",
+				                cargoPod, new Agressive());
+		
 		((Mobile) world.getMobile("Lurker")).setStat(6, Trait.STRENGTH);
 		((Mobile) world.getMobile("Lurker")).setStat(6, Trait.AGILITY);
 		((Mobile) world.getMobile("Lurker")).setStat(25, Trait.HITPOINTS);
