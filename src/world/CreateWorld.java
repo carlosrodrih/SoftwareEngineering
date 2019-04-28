@@ -548,7 +548,7 @@ public class CreateWorld {
 		((Mutters) world.getMobile("Rover").getStrategy()).setMobile(rover);
 		world.addToWorld(rover);*/
 		
-		  world
+		  /*world
 				.createMobile(
 						"Fog Crawler",
 						"Based on their anatomy they are most likely a form of mutated mantis shrimp ",
@@ -588,7 +588,7 @@ public class CreateWorld {
 		((Mobile) world.getMobile("Sand_Cat")).setStat(10, Trait.AGILITY);
 		((Mobile) world.getMobile("Sand_Cat")).setStat(2, Trait.STRENGTH);
 		((Mobile) world.getMobile("Sand_Cat")).setStat(10,Trait.HITPOINTS);
-		
+		*/
 			
 
 		world
