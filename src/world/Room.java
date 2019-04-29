@@ -21,6 +21,7 @@ public class Room extends DatabaseObject {
 	private List<Room> roomList;
 	private List<Gear> gearList;
 	private Set<String> movables;
+	private Set<Mobile> mobiles;
 	private Exits exits;
 
 	/**
@@ -113,6 +114,21 @@ public class Room extends DatabaseObject {
 			if (movableToAdd instanceof Player) {
 				this.refreshMobiles();
 			}
+		}
+
+		return result;
+	}
+	
+	public boolean add(Mobile mobileToAdd) {
+
+		// Add to this Object's list & return the success or failure of the add.
+		boolean result = this.mobiles
+				.add(mobileToAdd.cloneMe());
+
+		// Set hew location/parent.
+		if (result) {
+			System.out.println(mobileToAdd.getName() + " added to room "
+					+ this.getName());
 		}
 
 		return result;

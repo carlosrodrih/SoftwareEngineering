@@ -25,7 +25,7 @@ import util.PlayerFactory;
  */
 public class World implements Runnable {
 
-	private transient static World instance = new World();
+	private transient static World instance = new World("", "", "");
 	private transient Thread saveThread;
 	private transient boolean threadsLocked;
 	private transient Object lockObject = new Object();
@@ -43,7 +43,12 @@ public class World implements Runnable {
 
 	// This private constructor will initialize necessary variables.
 	private World(String mobsFile, String roomsFile, String itemsFile) {
-		in = new BufferedReader( new FileReader(mobsFile));
+		try {
+			in = new BufferedReader(new FileReader(mobsFile)); //needs a file with the mobs
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		MobileFactory.loadMobiles(in);
 		// add items factory and rooms factory
 		this.saveThread = new Thread(this);
@@ -229,21 +234,24 @@ public class World implements Runnable {
 	 * 
 	 * @param name
 	 *            The name for the MOB
+	 * @param string 
 	 * @param description
 	 *            The description for the MOB
 	 * @param room
 	 *            The starting room for the MOB
+	 * @param strategy 
 	 * @param strategy
 	 *            The strategy for the specific MOB
+	 * @return 
 	 * 
 	 * @return The created MOB, or null if duplicate
 	 */
-/*	public void createMobile(String name, Room room) {
+	public Mobile createMobile(String name, String description, Room room, Strategy strategy) {
 
 		Mobile temp = MobileFactory.getMobile(name);
 		if(temp != null) {
 
-			World.getInstance().addMobToWorld(temp);
+			World.getInstance().addToWorld(temp);
 			room.add(temp);
 			//put returned mob to the room
 		}
@@ -252,14 +260,14 @@ public class World implements Runnable {
 			World.getInstance().addToWorld(temp);
 			temp.setStrategy(strategy);
 			temp.setLocation(room);
-			temp.moveToRoom(room);
-			temp.setStart(room);
+			//temp.moveToRoom(room);
+			//temp.setStart(room);
 			temp.setDescription(description);
 			return temp;
 		}
 
 		return null;
-	}*/
+	}
 
 	public void addMobToWorld(String name, Room room) {
 		

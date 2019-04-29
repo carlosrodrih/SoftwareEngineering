@@ -53,7 +53,7 @@ public class MudServer {
 	 */
 	public static void main(String[] args)  {
 
-		
+		new CreateWorld().createWorld();
 		try {
 			Interpreter.getInstance().getWorld().loadWorld();
 		} catch (WorldNotFoundException e) {

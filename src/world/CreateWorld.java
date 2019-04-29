@@ -43,11 +43,11 @@ public class CreateWorld {
 		Room south = RoomFactory.createRoom("South Wing", "This is the South Wing");
 		Room west = RoomFactory.createRoom("West Wing", "This is the West Wing");
 
-		ExitSetter.SetExits(central, north, south, east, west, null, null);
-		ExitSetter.SetExits(south, central, null, null, null, null, null);
-		ExitSetter.SetExits(west, null, null, central, null, null, null);
-		ExitSetter.SetExits(north, null, central, null, null, null, null);
-		ExitSetter.SetExits(east, null, null, null, central, null, null);
+		ExitSetter.setExits(central, north, south, east, west, null, null);
+		ExitSetter.setExits(south, central, null, null, null, null, null);
+		ExitSetter.setExits(west, null, null, central, null, null, null);
+		ExitSetter.setExits(north, null, central, null, null, null, null);
+		ExitSetter.setExits(east, null, null, null, central, null, null);
 
 		Weapon laser = new Weapon("STING", "A laser sword from days of old.");
 		world.addToWorld(laser);

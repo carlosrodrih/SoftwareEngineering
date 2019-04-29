@@ -1,5 +1,7 @@
 package world;
 
+import java.util.List;
+
 /**
  * Mobile is a class which represents Mobiles, or any non-player object with
  * behavior similar to that of a player (such as the ability to fight, or a set
@@ -9,7 +11,7 @@ package world;
  * @author Matt Turner, Ross Bottorf, Zach Boe, Jonathan Perrine
  * 
  */
-public class Mobile extends DatabaseObject implements Character{
+public class Mobile extends DatabaseObject implements Character, Movable{
 
 	private static final long serialVersionUID = 1L;
 	/*private int maxTechnique;
@@ -255,5 +257,83 @@ public class Mobile extends DatabaseObject implements Character{
 	@Override
 	public void setRoomId(int id) {
 		this.roomId = id;
+	}
+
+	@Override
+	public boolean addGear(Gear item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addGear(Movable movableToNotify, Gear gear) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean giveGear(Movable movableToNotify, String itemName, String otherName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void dropGear(String itemName, Room room, Movable movableToNotify) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Gear getGear(String itemName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canBeCarried() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getMaxGearCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setMaxGearCount(int max) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String inspect() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Gear> listGear() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void moveToRoom(Room destination) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void use(String itemName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void technique(Movable target) {
+		// TODO Auto-generated method stub
+		
 	}
 }
